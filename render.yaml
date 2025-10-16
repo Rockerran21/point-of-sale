@@ -1,15 +1,8 @@
 services:
   - type: web
     name: triangle-pos
-    env: php
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      npm ci
-      npm run build
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    env: docker
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: APP_NAME
         value: Triangle POS
@@ -24,7 +17,7 @@ services:
           name: triangle-pos-db
           property: connectionString
       - key: DB_CONNECTION
-        value: mysql
+        value: pgsql
 
 databases:
   - name: triangle-pos-db
