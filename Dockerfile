@@ -1,6 +1,6 @@
 FROM php:8.1-fpm
 
-WORKDIR /app
+WORKDIR /var/www/html
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -12,34 +12,46 @@ RUN apt-get update && apt-get install -y \
   unzip \
   git \
   curl \
-  nodejs \
-  npm
+  nginx \
+  supervisor
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+  && apt-get install -y nodejs
 
 # Install PHP extensions
-RUN apt-get install -y libpq-dev
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install mysqli pdo pdo_mysql pdo_pgsql pgsql zip gd
+RUN apt-get install -y libpq-dev \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install mysqli pdo pdo_mysql zip gd bcmath
 
+# Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install composer
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
   --install-dir=/usr/bin --filename=composer
 
 # Copy application files
-COPY . /app
+COPY . /var/www/html
 
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN npm ci && npm run build
 
 # Set permissions
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
-RUN chmod -R 775 /app/storage /app/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html \
+  && chmod -R 775 /var/www/html/storage \
+  && chmod -R 775 /var/www/html/bootstrap/cache
+
+# Configure Nginx
+COPY docker/nginx.conf /etc/nginx/sites-available/default
+
+# Configure Supervisor
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Expose port
-EXPOSE 8000
+EXPOSE 80
 
-# Start command
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+# Start supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
