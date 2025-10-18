@@ -21,10 +21,9 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install Node.js (using official NodeJS image)
-COPY --from=node:18-slim /usr/local/bin/node /usr/local/bin/node
-COPY --from=node:18-slim /usr/local/bin/npm /usr/local/bin/npm
-COPY --from=node:18-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
 
 # Copy only necessary files first (for better caching)
 COPY composer.json composer.lock package.json package-lock.json ./
