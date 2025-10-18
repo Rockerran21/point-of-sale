@@ -26,22 +26,15 @@ $app = require_once __DIR__ . '/app.php';
 $app->useStoragePath('/tmp/storage');
 $app->useDatabasePath('/tmp');
 
-// Force register essential service providers for serverless
-$app->register(\Illuminate\View\ViewServiceProvider::class);
-$app->register(\Illuminate\Translation\TranslationServiceProvider::class);
-$app->register(\Illuminate\Validation\ValidationServiceProvider::class);
-$app->register(\Illuminate\Session\SessionServiceProvider::class);
-$app->register(\Illuminate\Cookie\CookieServiceProvider::class);
-$app->register(\Illuminate\Database\DatabaseServiceProvider::class);
-$app->register(\Illuminate\Filesystem\FilesystemServiceProvider::class);
-$app->register(\Illuminate\Auth\AuthServiceProvider::class);
+// Boot the application first to register all service providers
+$app->boot();
 
-// Override cache paths
+// Now override configuration after services are registered
 $app['config']->set('view.compiled', '/tmp/storage/framework/views');
 $app['config']->set('cache.stores.file.path', '/tmp/storage/framework/cache');
 $app['config']->set('session.files', '/tmp/storage/framework/sessions');
-
-// Boot the application
-$app->boot();
+$app['config']->set('filesystems.disks.local.root', '/tmp/storage/app');
+$app['config']->set('cache.default', 'array');
+$app['config']->set('session.driver', 'cookie');
 
 return $app;
