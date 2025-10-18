@@ -30,6 +30,10 @@
             "dest": "public/robots.txt"
         },
         {
+            "src": "/test$",
+            "dest": "/api/test.php"
+        },
+        {
             "src": "/init-db$",
             "dest": "/api/init-db.php"
         },
