@@ -22,7 +22,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Install PHP extensions
 RUN apt-get install -y libpq-dev \
   && docker-php-ext-configure gd --with-freetype --with-jpeg \
-  && docker-php-ext-install mysqli pdo pdo_mysql zip gd bcmath
+  && docker-php-ext-install mysqli pdo pdo_mysql zip gd bcmath exif
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

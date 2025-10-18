@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.backup
+.env.vercel
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
@@ -13,3 +14,22 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# SSH keys and credentials
+*.key
+*.pem
+*.tar.gz
+
+# Development files
+init-vercel-db.php
+HamroPOS.jpeg
+pscale.tar.gz

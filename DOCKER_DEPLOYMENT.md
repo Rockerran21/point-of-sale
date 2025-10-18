@@ -66,7 +66,7 @@ nano .env
 
 **Set these in .env:**
 ```env
-APP_NAME="Triangle POS"
+APP_NAME="Hamro POS"
 APP_ENV=production
 APP_DEBUG=false
 APP_KEY=base64:GENERATE_THIS_LATER
