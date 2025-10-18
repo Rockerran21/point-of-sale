@@ -1,21 +1,31 @@
 <?php
 
-// Change to the base directory
-chdir(__DIR__ . '/../');
+// Ensure we're in the right directory
+$root = __DIR__ . '/../';
+chdir($root);
 
-// Load composer autoloader
-require __DIR__ . '/../vendor/autoload.php';
+// Define Laravel constants
+if (!defined('LARAVEL_START')) {
+    define('LARAVEL_START', microtime(true));
+}
 
-// Bootstrap Laravel application
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+// Load the autoloader
+require $root . 'vendor/autoload.php';
 
-// Run the application
+// Bootstrap the Laravel application
+$app = require_once $root . 'bootstrap/app.php';
+
+// Create the HTTP kernel
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-);
+// Capture the request
+$request = Illuminate\Http\Request::capture();
 
+// Handle the request
+$response = $kernel->handle($request);
+
+// Send the response
 $response->send();
 
+// Terminate the request
 $kernel->terminate($request, $response);
