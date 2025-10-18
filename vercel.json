@@ -43,14 +43,8 @@
         "QUEUE_CONNECTION": "sync",
         "VIEW_COMPILED_PATH": "/tmp/views",
         "APP_STORAGE": "/tmp",
-        "FILESYSTEM_DRIVER": "s3",
+        "FILESYSTEM_DRIVER": "cloudinary",
         "SESSION_LIFETIME": "120",
         "BCRYPT_ROUNDS": "10"
-    },
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.7.1",
-            "maxDuration": 30
-        }
     }
 }
