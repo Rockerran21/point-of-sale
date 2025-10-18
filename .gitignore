@@ -33,3 +33,5 @@ Thumbs.db
 init-vercel-db.php
 HamroPOS.jpeg
 pscale.tar.gz
+.vercel
+.env*.local
