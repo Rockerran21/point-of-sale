@@ -24,9 +24,18 @@ class SearchProduct extends Component
     }
 
     public function updatedQuery() {
-        $this->search_results = Product::where('product_name', 'like', '%' . $this->query . '%')
-            ->orWhere('product_code', 'like', '%' . $this->query . '%')
-            ->take($this->how_many)->get();
+        $term = trim($this->query);
+        if ($term === '') {
+            $this->search_results = collect();
+            return;
+        }
+        $this->search_results = Product::where(function ($q) use ($term) {
+                $q->where('product_name', 'like', "%$term%")
+                  ->orWhere('product_code', 'like', "%$term%");
+            })
+            ->orderByDesc('id')
+            ->take($this->how_many)
+            ->get();
     }
 
     public function loadMore() {
@@ -40,7 +49,11 @@ class SearchProduct extends Component
         $this->search_results = Collection::empty();
     }
 
-    public function selectProduct($product) {
-        $this->dispatch('productSelected', $product);
+    public function selectProduct($productId) {
+        $product = Product::find($productId);
+        if ($product) {
+            $this->dispatch('productSelected', $product);
+        }
+        $this->resetQuery();
     }
 }

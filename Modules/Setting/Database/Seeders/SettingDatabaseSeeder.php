@@ -15,12 +15,13 @@ class SettingDatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $currencyId = \Modules\Currency\Entities\Currency::where('code', 'NRS')->value('id') ?? 1;
         Setting::create([
             'company_name' => 'Hamro POS',
             'company_email' => 'company@test.com',
             'company_phone' => '012345678901',
             'notification_email' => 'notification@test.com',
-            'default_currency_id' => 1,
+            'default_currency_id' => $currencyId,
             'default_currency_position' => 'prefix',
             'footer_text' => 'Hamro POS © 2025',
             'company_address' => 'Kathmandu, Nepal'
