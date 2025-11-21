@@ -16,13 +16,16 @@ class CurrencyDatabaseSeeder extends Seeder
      * @return void
      */
     public function run() {
-        Currency::create([
-            'currency_name'      => 'US Dollar',
-            'code'               => Str::upper('USD'),
-            'symbol'             => '$',
-            'thousand_separator' => ',',
-            'decimal_separator'  => '.',
-            'exchange_rate'      => null
-        ]);
+        Currency::where('code', '!=', 'NRS')->delete();
+        Currency::updateOrCreate(
+            ['code' => Str::upper('NRS')],
+            [
+                'currency_name'      => 'Nepalese Rupee',
+                'symbol'             => 'NRs ',
+                'thousand_separator' => ',',
+                'decimal_separator'  => '.',
+                'exchange_rate'      => null
+            ]
+        );
     }
 }

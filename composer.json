@@ -66,7 +66,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "audit": {
+            "ignore": ["[\"PKSA-g5js-3ypd-k2kr\",\"PKSA-9tny-xycd-bd72\",\"PKSA-s9kt-tq5r-6f3y\"]"]
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true

@@ -1,6 +1,6 @@
 services:
   web:
-    image: triangle-pos:latest
+    image: hamro-pos:latest
     build:
       context: .
     env_file:
@@ -8,9 +8,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/var/www/html
+      - .:/app
     depends_on:
       - db
+    restart: unless-stopped
 
   db:
     platform: "linux/amd64"
@@ -26,7 +27,8 @@ services:
       - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
-
+    restart: unless-stopped
+      
 volumes:
   dbdata:
 

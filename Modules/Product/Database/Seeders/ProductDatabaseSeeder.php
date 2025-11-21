@@ -18,16 +18,18 @@ class ProductDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        Category::create([
-            'category_code' => 'CA_01',
-            'category_name' => 'Random'
-        ]);
+        Category::firstOrCreate(
+            ['category_code' => 'CA_01'],
+            ['category_name' => 'Random']
+        );
 
-        Unit::create([
-            'name' => 'Piece',
-            'short_name' => 'PC',
-            'operator' => '*',
-            'operation_value' => 1
-        ]);
+        Unit::firstOrCreate(
+            ['name' => 'Piece'],
+            [
+                'short_name' => 'PC',
+                'operator' => '*',
+                'operation_value' => 1
+            ]
+        );
     }
 }
